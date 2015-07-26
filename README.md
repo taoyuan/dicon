@@ -1,9 +1,7 @@
-#### THIS PROJECT IS DEPRECATED, please consider using [angular/di](https://github.com/angular/di.js) instead.
-I don't actively maintain this project, in favor of angular/di, which is heavily influenced by node-di and thus the migration should be easy. Eventually angular/di will be published to NPM as di@2.0.
-
+# dicon
 ---------
 
-## Dependency Injection framework for Node.js
+## Dependency Injection Container framework for Node.js
 
 ### Why Dependency Injection ?
 There are two things - **Dependency Injection pattern** (aka Inversion of Control) and **Dependency Injection framework**.
@@ -38,25 +36,25 @@ var createPetrolEngine = function(power) {
 
 
 // a module is just a plain JavaScript object
-// it is a recipe for the injector, how to instantiate stuff
+// it is a recipe for the container, how to instantiate stuff
 var module = {
-  // if an object asks for 'car', the injector will call new Car(...) to produce it
+  // if an object asks for 'car', the container will call new Car(...) to produce it
   'car': ['type', Car],
-  // if an object asks for 'engine', the injector will call createPetrolEngine(...) to produce it
+  // if an object asks for 'engine', the container will call createPetrolEngine(...) to produce it
   'engine': ['factory', createPetrolEngine],
-  // if an object asks for 'power', the injector will give it number 1184
+  // if an object asks for 'power', the container will give it number 1184
   'power': ['value', 1184] // probably Bugatti Veyron
 };
 
 
 var di = require('di');
-var injector = new di.Injector(module);
+var container = new di.Container(module);
 
-injector.invoke(function(car) {
+container.invoke(function(car) {
   car.start();
 });
 ```
-For more examples, check out [the tests](test/injector.spec.coffee). You can also check out [Karma](https://github.com/karma-runner/karma) and its plugins for more complex examples.
+For more examples, check out [the tests](test/container.spec.coffee). You can also check out [Karma](https://github.com/karma-runner/karma) and its plugins for more complex examples.
 
 
 ### Registering stuff
@@ -87,7 +85,7 @@ var module = {
 
 
 ### Annotation
-The injector looks up tokens based on argument names:
+The container looks up tokens based on argument names:
 ```js
 var Car = function(engine, license) {
   // will inject objects bound to 'engine' and 'license' tokens
@@ -137,8 +135,8 @@ Made for [Karma]. Heavily influenced by [AngularJS]. Also inspired by [Guice] an
 <!--
 Object - a member of object graph in an application that can have dependencies on instances of other types (i.e. other Objects).
 Token - each Object dependency (not an Object itself) is identified via a Token. Token is typically an annotation, string constant or a class/type
-Injector - a container or context, capable of resolving Object dependencies and caching references to Objects constructed during the dependency resolution process.
+Container - a container or context, capable of resolving Object dependencies and caching references to Objects constructed during the dependency resolution process.
 Provider - a recipe for constructing Objects, typically a constructor or factory function
 Binding - a mapping between a Token and a Provider
-Module - a set of bindings. A Module is used to configure an Injector and defines which Objects can be resolved via an Injector. Module can also be used to override Object definitions (for reconfiguration or mocking purposes). 
+Module - a set of bindings. A Module is used to configure an Container and defines which Objects can be resolved via an Container. Module can also be used to override Object definitions (for reconfiguration or mocking purposes). 
 -->
