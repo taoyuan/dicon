@@ -1,7 +1,7 @@
 {
-  "name": "di",
+  "name": "dicon",
   "version": "1.0.0",
-  "description": "Dependency Injection for Node.js. Heavily inspired by AngularJS.",
+  "description": "A Dependency Injection Container for Node.js. Heavily inspired by AngularJS.",
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha --compilers coffee:coffee-script test/*"
