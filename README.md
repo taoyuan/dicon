@@ -1,9 +1,8 @@
 # dicon
----------
+[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+> Dependency Injection Container framework for Node.js
 
-## Dependency Injection Container framework for Node.js
-
-### Why Dependency Injection ?
+## Why Dependency Injection ?
 There are two things - **Dependency Injection pattern** (aka Inversion of Control) and **Dependency Injection framework**.
 
 The Dependency Injection pattern is about separating the instantiation of objects from the actual logic and behavior that they encapsulate. This pattern has many benefits such as:
@@ -17,7 +16,7 @@ Following this pattern is, of course, possible without any framework.
 However, if you do follow the Dependency Injection pattern, you typically end up with some kind of nasty `main()` method, where you instantiate all the objects and wire them together. The Dependency Injection framework saves you from this boilerplate. **It makes wiring the application declarative rather than imperative.** Each component declares its dependencies and the framework does transitively resolve these dependencies...
 
 
-### Example
+## Example
 
 ```js
 var Car = function(engine) {
@@ -57,9 +56,9 @@ container.invoke(function(car) {
 For more examples, check out [the tests](test/container.spec.coffee). You can also check out [Karma](https://github.com/karma-runner/karma) and its plugins for more complex examples.
 
 
-### Registering stuff
+## Registering stuff
 
-#### type(token, Constructor)
+### type(token, Constructor)
 To produce the instance, `Constructor` will be called with `new` operator.
 ```js
 var module = {
@@ -67,7 +66,7 @@ var module = {
 };
 ```
 
-#### factory(token, factoryFn)
+### factory(token, factoryFn)
 To produce the instance, `factoryFn` will be called (without any context) and its result will be used.
 ```js
 var module = {
@@ -75,7 +74,7 @@ var module = {
 };
 ```
 
-#### value(token, value)
+### value(token, value)
 Register the final value.
 ```js
 var module = {
@@ -83,8 +82,7 @@ var module = {
 };
 ```
 
-
-### Annotation
+## Annotation
 The container looks up tokens based on argument names:
 ```js
 var Car = function(engine, license) {
@@ -111,7 +109,7 @@ var module = {
 };
 ```
 
-### Differences to Angular's DI
+## Differences to Angular's DI
 
 - no config/runtime phases (configuration happens by injecting a config object)
 - no global module register
@@ -140,3 +138,15 @@ Provider - a recipe for constructing Objects, typically a constructor or factory
 Binding - a mapping between a Token and a Provider
 Module - a set of bindings. A Module is used to configure an Container and defines which Objects can be resolved via an Container. Module can also be used to override Object definitions (for reconfiguration or mocking purposes). 
 -->
+
+## License
+
+MIT © [Yuan Tao]()
+
+
+[npm-image]: https://badge.fury.io/js/dicon.svg
+[npm-url]: https://npmjs.org/package/dicon
+[travis-image]: https://travis-ci.org/taoyuan/dicon.svg?branch=master
+[travis-url]: https://travis-ci.org/taoyuan/dicon
+[daviddm-image]: https://david-dm.org/taoyuan/dicon.svg?theme=shields.io
+[daviddm-url]: https://david-dm.org/taoyuan/dicon
