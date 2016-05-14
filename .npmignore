@@ -2,3 +2,4 @@ test
 .*
 di.sublime-*
 Gruntfile.coffee
+.idea
