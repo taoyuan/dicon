@@ -1,5 +1,4 @@
-# dicon
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+# dicon [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 > Dependency Injection Container framework for Node.js
 
 ## Why Dependency Injection ?
