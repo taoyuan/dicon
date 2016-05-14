@@ -44,8 +44,7 @@ var module = {
   'power': ['value', 1184] // probably Bugatti Veyron
 };
 
-
-var di = require('di');
+var di = require('dicon');
 var container = new di.Container(module);
 
 container.invoke(function(car) {
