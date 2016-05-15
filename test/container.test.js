@@ -34,15 +34,14 @@ describe('container', function () {
   });
 
   it('should consume multiple objects as modules', function () {
-    var BazType, container, module1, module2;
-    BazType = (function () {
+    var BazType = (function () {
       function BazType() {
       }
 
       return BazType;
 
     })();
-    module1 = {
+    var module1 = {
       foo: [
         'factory', function () {
           return 'foo-value';
@@ -50,10 +49,10 @@ describe('container', function () {
       ],
       baz: ['type', BazType]
     };
-    module2 = {
+    var module2 = {
       bar: ['value', 'bar-value']
     };
-    container = new Container([module1, module2]);
+    var container = new Container([module1, module2]);
     expect(container.get('foo')).to.equal('foo-value');
     expect(container.get('bar')).to.equal('bar-value');
     return expect(container.get('baz')).to.be.an["instanceof"](BazType);
@@ -61,16 +60,11 @@ describe('container', function () {
 
   describe('get', function () {
     it('should return an instance', function () {
-      var BazType, container, module;
-      BazType = (function () {
-        function BazType() {
-          this.name = 'baz';
-        }
+      function BazType() {
+        this.name = 'baz';
+      }
 
-        return BazType;
-
-      })();
-      module = new Module;
+      var module = new Module;
       module.factory('foo', function () {
         return {
           name: 'foo'
@@ -78,7 +72,7 @@ describe('container', function () {
       });
       module.value('bar', 'bar value');
       module.type('baz', BazType);
-      container = new Container([module]);
+      var container = new Container([module]);
       expect(container.get('foo')).to.deep.equal({
         name: 'foo'
       });
@@ -90,16 +84,11 @@ describe('container', function () {
     });
 
     it('should always return the same instance', function () {
-      var BazType, container, module;
-      BazType = (function () {
-        function BazType() {
-          this.name = 'baz';
-        }
+      function BazType() {
+        this.name = 'baz';
+      }
 
-        return BazType;
-
-      })();
-      module = new Module;
+      var module = new Module;
       module.factory('foo', function () {
         return {
           name: 'foo'
@@ -107,38 +96,34 @@ describe('container', function () {
       });
       module.value('bar', 'bar value');
       module.type('baz', BazType);
-      container = new Container([module]);
+      var container = new Container([module]);
       expect(container.get('foo')).to.equal(container.get('foo'));
       expect(container.get('bar')).to.equal(container.get('bar'));
       return expect(container.get('baz')).to.equal(container.get('baz'));
     });
-    
+
     it('should resolve dependencies', function () {
-      var Foo, bar, container, fooInstance, module;
-      Foo = (function () {
-        function Foo(bar, baz) {
-          this.bar = bar;
-          this.baz = baz;
-        }
+      function Foo(bar, baz) {
+        this.bar = bar;
+        this.baz = baz;
+      }
 
-        return Foo;
-
-      })();
       Foo.$inject = ['bar', 'baz'];
-      bar = function (baz, abc) {
+      function bar(baz, abc) {
         return {
           baz: baz,
           abc: abc
         };
-      };
+      }
+
       bar.$inject = ['baz', 'abc'];
-      module = new Module;
+      var module = new Module;
       module.type('foo', Foo);
       module.factory('bar', bar);
       module.value('baz', 'baz-value');
       module.value('abc', 'abc-value');
-      container = new Container([module]);
-      fooInstance = container.get('foo');
+      var container = new Container([module]);
+      var fooInstance = container.get('foo');
       expect(fooInstance.bar).to.deep.equal({
         baz: 'baz-value',
         abc: 'abc-value'
@@ -146,29 +131,26 @@ describe('container', function () {
       return expect(fooInstance.baz).to.equal('baz-value');
     });
     it('should inject properties', function () {
-      var container, module;
-      module = new Module;
+      var module = new Module;
       module.value('config', {
         a: 1,
         b: {
           c: 2
         }
       });
-      container = new Container([module]);
+      var container = new Container([module]);
       expect(container.get('config.a')).to.equal(1);
       return expect(container.get('config.b.c')).to.equal(2);
     });
     it('should inject dotted service if present', function () {
-      var container, module;
-      module = new Module;
+      var module = new Module;
       module.value('a.b', 'a.b value');
-      container = new Container([module]);
+      var container = new Container([module]);
       return expect(container.get('a.b')).to.equal('a.b value');
     });
     it('should provide "container"', function () {
-      var container, module;
-      module = new Module;
-      container = new Container([module]);
+      var module = new Module;
+      var container = new Container([module]);
       return expect(container.get('container')).to.equal(container);
     });
     it('should throw error with full path if no provider', function () {
@@ -504,7 +486,7 @@ describe('container', function () {
       expect(foo).to.be.defined;
       return expect(foo.bar).to.equal('bar-from-other-module');
     });
-    return it('should only create one private child container', function () {
+    it('should only create one private child container', function () {
       var bar, barFromChild, childInjector, container, foo, fooFromChild, m;
       m = {
         __exports__: ['foo', 'bar'],
@@ -536,11 +518,11 @@ describe('container', function () {
       barFromChild = childInjector.get('bar');
       expect(fooFromChild).to.not.equal(foo);
       expect(barFromChild).to.not.equal(bar);
-      return expect(fooFromChild.bar).to.equal(barFromChild);
+      expect(fooFromChild.bar).to.equal(barFromChild);
     });
   });
-  return describe('scopes', function () {
-    return it('should force new instances per scope', function () {
+  describe('scopes', function () {
+    it('should force new instances per scope', function () {
       var Foo, bar, container, createBar, foo, m, requestInjector, sessionInjector;
       Foo = function () {
       };
@@ -561,7 +543,35 @@ describe('container', function () {
       expect(sessionInjector.get('bar')).to.not.equal(bar);
       requestInjector = container.createChild([], ['request']);
       expect(requestInjector.get('foo')).to.not.equal(foo);
-      return expect(requestInjector.get('bar')).to.equal(bar);
+      expect(requestInjector.get('bar')).to.equal(bar);
+    });
+  });
+
+  describe('lifecycle', function () {
+    it('should start instance', function () {
+      function Foo() {
+
+      }
+      Foo.prototype.start = function () {
+        this.started = true;
+      };
+
+      Foo.prototype.stop = function () {
+        this.started = false;
+      };
+
+      var container = new Container({
+        foo: ['type', Foo]
+      });
+
+      assert.notOk(container.started);
+      container.start();
+      assert.ok(container.started);
+      var foo = container.get('foo');
+      assert.ok(foo.started);
+      container.stop();
+      assert.notOk(foo.started);
+      assert.notOk(container.started);
     });
   });
 });
