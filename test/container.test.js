@@ -1,22 +1,24 @@
 "use strict";
 
 var expect = require('chai').expect;
+var assert = require('chai').assert;
 var Module = require('../lib/module');
 var Container = require('../lib/container');
 
 describe('container', function () {
 
+  it('should expose public api and properties', function () {
+    var container = new Container();
+    assert(container.providers);
+    assert(container.instances);
+  });
+
   it('should consume an object as a module', function () {
-    var BazType, container, module;
-    BazType = (function () {
-      function BazType() {
-        this.name = 'baz';
-      }
+    function BazType() {
+      this.name = 'baz';
+    }
 
-      return BazType;
-
-    })();
-    module = {
+    var module = {
       foo: [
         'factory', function () {
           return 'foo-value';
@@ -25,11 +27,12 @@ describe('container', function () {
       bar: ['value', 'bar-value'],
       baz: ['type', BazType]
     };
-    container = new Container(module);
+    var container = new Container(module);
     expect(container.get('foo')).to.equal('foo-value');
     expect(container.get('bar')).to.equal('bar-value');
     return expect(container.get('baz')).to.be.an["instanceof"](BazType);
   });
+
   it('should consume multiple objects as modules', function () {
     var BazType, container, module1, module2;
     BazType = (function () {
