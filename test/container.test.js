@@ -58,6 +58,7 @@ describe('container', function () {
     expect(container.get('bar')).to.equal('bar-value');
     return expect(container.get('baz')).to.be.an["instanceof"](BazType);
   });
+
   describe('get', function () {
     it('should return an instance', function () {
       var BazType, container, module;
@@ -87,6 +88,7 @@ describe('container', function () {
       });
       return expect(container.get('baz')).to.be.an["instanceof"](BazType);
     });
+
     it('should always return the same instance', function () {
       var BazType, container, module;
       BazType = (function () {
@@ -110,6 +112,7 @@ describe('container', function () {
       expect(container.get('bar')).to.equal(container.get('bar'));
       return expect(container.get('baz')).to.equal(container.get('baz'));
     });
+    
     it('should resolve dependencies', function () {
       var Foo, bar, container, fooInstance, module;
       Foo = (function () {
@@ -459,9 +462,9 @@ describe('container', function () {
       expect(container.get('foo')).to.equal('private-from-a');
       return expect(container.get('bar')).to.equal('private-from-b');
     });
+
     it('should allow forcing new instance', function () {
-      var container, firstChild, fooFromFirstChild, fooFromSecondChild, module, secondChild;
-      module = {
+      var module = {
         __exports__: ['foo'],
         'foo': [
           'factory', function (bar) {
@@ -472,11 +475,11 @@ describe('container', function () {
         ],
         'bar': ['value', 'private-bar']
       };
-      container = new Container([module]);
-      firstChild = container.createChild([], ['foo']);
-      secondChild = container.createChild([], ['foo']);
-      fooFromFirstChild = firstChild.get('foo');
-      fooFromSecondChild = secondChild.get('foo');
+      var container = new Container([module]);
+      var firstChild = container.createChild([], ['foo']);
+      var secondChild = container.createChild([], ['foo']);
+      var fooFromFirstChild = firstChild.get('foo');
+      var fooFromSecondChild = secondChild.get('foo');
       expect(fooFromFirstChild).not.to.equal(fooFromSecondChild);
       return expect(fooFromFirstChild.bar).to.equal(fooFromSecondChild.bar);
     });
