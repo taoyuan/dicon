@@ -1,6 +1,6 @@
 {
   "name": "dicon",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Dependency Injection Container for Node.js. Heavily inspired by AngularJS.",
   "main": "lib/index.js",
   "scripts": {
