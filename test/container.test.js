@@ -2,6 +2,7 @@
 
 var expect = require('chai').expect;
 var assert = require('chai').assert;
+var Promise = require('bluebird');
 var Module = require('../lib/module');
 var Container = require('../lib/container');
 
@@ -552,8 +553,10 @@ describe('container', function () {
       function Foo() {
 
       }
+
       Foo.prototype.start = function () {
         this.started = true;
+        return Promise.delay(500);
       };
 
       Foo.prototype.stop = function () {
@@ -565,13 +568,16 @@ describe('container', function () {
       });
 
       assert.notOk(container.started);
-      container.start();
-      assert.ok(container.started);
-      var foo = container.get('foo');
-      assert.ok(foo.started);
-      container.stop();
-      assert.notOk(foo.started);
-      assert.notOk(container.started);
+      var t = new Date();
+      return container.start().then(function () {
+        assert.ok(new Date() - t > 500);
+        assert.ok(container.started);
+        var foo = container.get('foo');
+        assert.ok(foo.started);
+        container.stop();
+        assert.notOk(foo.started);
+        assert.notOk(container.started);
+      });
     });
   });
 });
